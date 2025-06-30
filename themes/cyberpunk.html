@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اطلاعات اشتراک سایبرپانک</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@33.003/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    
+    :root {
+      --neon-blue: #00f0ff;
+      --neon-pink: #ff00ff;
+      --neon-green: #00ff9f;
+      --dark-bg: #0a0e1a;
+      --glow-blue: 0 0 10px #00f0ff, 0 0 20px #00f0ff, 0 0 30px #00f0ff;
+      --glow-pink: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+    }
+
+    body {
+      font-family: 'Orbitron', 'Vazirmatn', sans-serif;
+      background: linear-gradient(45deg, var(--dark-bg), #1a2338);
+      color: var(--neon-blue);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.1), transparent 70%);
+      z-index: -1;
+      animation: pulse 15s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+
+    @keyframes neon-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; text-shadow: var(--glow-blue); }
+      20%, 24%, 55% { opacity: 0.8; text-shadow: none; }
+    }
+
+    .neon-text {
+      text-shadow: var(--glow-blue);
+      animation: neon-flicker 1.5s infinite;
+    }
+
+    .neon-button {
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+      border: 1px solid var(--neon-blue);
+      box-shadow: var(--glow-blue);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .neon-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-pink);
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+    }
+
+    .neon-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .neon-button:hover::after {
+      opacity: 1;
+      animation: scan 0.5s ease;
+    }
+
+    @keyframes scan {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .cyber-glass {
+      background: rgba(10, 14, 26, 0.7);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .cyber-glass:hover {
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    body.light {
+      background: linear-gradient(45deg, #e0e7ff, #c3dafe) !important;
+      color: #1e3a8a !important;
+    }
+
+    body.light .cyber-glass {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border-color: #93c5fd !important;
+      box-shadow: 0 0 15px rgba(147, 197, 253, 0.4) !important;
+    }
+
+    body.light .neon-text {
+      text-shadow: none !important;
+      color: #1e40af !important;
+      animation: none !important;
+    }
+
+    body.light .neon-button {
+      background: linear-gradient(45deg, #3b82f6, #7c3aed) !important;
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5) !important;
+    }
+
+    #theme-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 50;
+      padding: 0.75rem;
+      border-radius: 50%;
+      background: rgba(0, 240, 255, 0.2);
+      border: 1px solid var(--neon-blue);
+      box-shadow: var(--glow-blue);
+      transition: all 0.3s ease;
+    }
+
+    #theme-toggle:hover {
+      box-shadow: 0 0 20px var(--neon-blue);
+      transform: scale(1.1);
+    }
+
+    .usage-bar {
+      background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+      box-shadow: var(--glow-blue);
+      transition: width 1s ease;
+    }
+
+    .connection-item:hover {
+      background: rgba(0, 240, 255, 0.1) !important;
+      animation: glitch 0.3s ease;
+    }
+
+    .canvas-qr {
+      border: 2px solid var(--neon-blue);
+      box-shadow: var(--glow-blue);
+      border-radius: 8px;
+      background: #000;
+    }
+  </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+  <button id="theme-toggle" onclick="toggleTheme()">
+    <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="var(--neon-blue)">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+        d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364l-1.414-1.414M6.05 6.05L4.636 4.636m12.728 0L18.364 4.636M6.05 17.95l-1.414 1.414M12 8a4 4 0 100 8 4 4 0 000-8z" />
+    </svg>
+  </button>
+
+  <div class="max-w-2xl mx-auto space-y-6">
+    <!-- Subscription Info Section -->
+    <div class="cyber-glass rounded-2xl p-8 text-center shadow-xl">
+      <div class="relative">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-pink-500/20 rounded-full blur-3xl"></div>
+        <div class="relative bg-gradient-to-br from-blue-900/50 to-pink-900/50 p-4 rounded-full inline-flex">
+          <svg class="w-10 h-10 text-neon-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+      </div>
+      <h1 class="text-3xl font-bold mt-4 mb-2 neon-text">اطلاعات اشتراک سایبرپانک</h1>
+      <p class="text-neon-green text-lg">شناسه: {{ .sId }}</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Download -->
+      <div class="cyber-glass rounded-xl p-4 shadow-lg">
+        <div class="flex items-center space-x-3">
+          <svg class="w-5 h-5 text-neon-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span class="text-neon-green">دانلود</span>
+        </div>
+        <p class="text-xl font-semibold mt-2 neon-text">{{ .download }}</p>
+      </div>
+
+      <!-- Upload -->
+      <div class="cyber-glass rounded-xl p-4 shadow-lg">
+        <div class="flex items-center space-x-3">
+          <svg class="w-5 h-5 text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          <span class="text-neon-green">آپلود</span>
+        </div>
+        <p class="text-xl font-semibold mt-2 neon-text">{{ .upload }}</p>
+      </div>
+
+      <!-- Expiry Date -->
+      <div class="cyber-glass rounded-xl p-4 shadow-lg">
+        <div class="flex items-center space-x-3">
+          <svg class="w-5 h-5 text-neon-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-neon-green">تاریخ انقضا</span>
+        </div>
+        <p class="text-xl font-semibold mt-2 neon-text" id="expireDate"></p>
+      </div>
+
+      <!-- Status -->
+      <div class="cyber-glass rounded-xl p-4 shadow-lg">
+        <div class="flex items-center space-x-3">
+          <svg class="w-5 h-5 text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M9 12l2 2l4-4" />
+          </svg>
+          <span class="text-neon-green">وضعیت</span>
+        </div>
+        <p class="text-xl font-semibold mt-2 neon-text" id="status"></p>
+      </div>
+    </div>
+
+    <!-- Usage Overview -->
+    <div class="cyber-glass rounded-xl p-6 shadow-lg">
+      <h2 class="text-lg font-semibold mb-4 neon-text">نمای کلی استفاده</h2>
+      <div class="w-full bg-gray-900/50 rounded-full h-3 mb-4">
+        <div id="usageBar" class="usage-bar h-3 rounded-full"></div>
+      </div>
+      <div class="flex justify-between text-sm text-neon-green">
+        <span id="usedText"></span>
+        <span id="remainingText"></span>
+      </div>
+    </div>
+
+    <!-- QR Code -->
+    <div class="cyber-glass rounded-xl p-6 shadow-lg text-center">
+      <canvas id="qrcode" class="canvas-qr mx-auto mb-4" width="200" height="200"></canvas>
+      <p class="text-neon-green">اسکن برای پیکربندی سایبر</p>
+    </div>
+
+    <!-- Connection Details -->
+    <div class="cyber-glass rounded-xl p-6 shadow-lg">
+      <div class="flex justify-between items-center cursor-pointer" onclick="toggleDropdown()">
+        <h2 class="text-lg font-semibold neon-text">جزئیات اتصال</h2>
+        <svg id="dropdownIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="var(--neon-blue)">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+      <div id="dropdownContent" class="mt-4 space-y-3 hidden">
+        <button onclick="copyAllConnections()" class="w-full neon-button flex justify-center items-center gap-2 px-4 py-2 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          کپی همه
+        </button>
+        {{ range .result }}
+        <div class="bg-gray-900/30 rounded-lg p-3 font-mono text-sm break-all relative group connection-item">
+          <button onclick="copyToClipboard('{{ . }}')" class="absolute right-2 top-2 p-2 rounded-lg bg-gray-900/50 hover:bg-gray-800/50 transition-colors">
+            <svg class="w-4 h-4 text-neon-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </button>
+          <span class="connection-text text-neon-green">{{ . }}</span>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+
+    <!-- App Buttons -->
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="v2rayng://install-config?url={{ .subUrl }}" class="neon-button flex items-center gap-2 px-6 py-3 rounded-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18l-6-6h12l-6 6z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v12"/>
+        </svg>
+        V2rayNG
+      </a>
+      <a href="streisand://import/{{ .subUrl }}" class="neon-button flex items-center gap-2 px-6 py-3 rounded-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18l-6-6h12l-6 6z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v12"/>
+        </svg>
+        Streisand
+      </a>
+    </div>
+
+    <!-- Apps Section -->
+    <div class="cyber-glass rounded-xl p-6 shadow-lg">
+      <h2 class="text-2xl font-semibold text-center mb-8 neon-text">برنامه‌های سایبری</h2>
+      <div class="grid gap-6">
+        <!-- iOS -->
+        <div class="p-4 rounded-lg bg-gray-900/30">
+          <div class="flex items-center justify-between">
+            <div class="text-lg font-medium text-neon-blue">iOS</div>
+            <div class="flex flex-wrap gap-4">
+              <div class="flex items-center bg-gray-900/50 rounded-lg p-3 transition-all hover:bg-gray-800/50">
+                <div class="mr-3">
+                  <div class="font-medium neon-text">Streisand</div>
+                  <div class="text-sm text-neon-green">iOS 15+</div>
+                </div>
+                <div class="flex gap-2">
+                  <a href="https://apps.apple.com/us/app/streisand/id6450534064" target="_blank">
+                    <button class="p-2 neon-button rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Android -->
+        <div class="p-4 rounded-lg bg-gray-900/30">
+          <div class="flex items-center justify-between">
+            <div class="text-lg font-medium text-neon-blue">Android</div>
+            <div class="flex flex-wrap gap-4">
+              <div class="flex items-center bg-gray-900/50 rounded-lg p-3 transition-all hover:bg-gray-800/50">
+                <div class="mr-3">
+                  <div class="font-medium neon-text">V2rayNG</div>
+                  <div class="text-sm text-neon-green">Android 8+</div>
+                </div>
+                <div class="flex gap-2">
+                  <a href="https://play.google.com/store/apps/details?id=com.v2ray.ang" target="_blank">
+                    <button class="p-2 neon-button rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Windows -->
+        <div class="p-4 rounded-lg bg-gray-900/30">
+          <div class="flex items-center justify-between">
+            <div class="text-lg font-medium text-neon-blue">Windows</div>
+            <div class="flex flex-wrap gap-4">
+              <div class="flex items-center bg-gray-900/50 rounded-lg p-3 transition-all hover:bg-gray-800/50">
+                <div class="mr-3">
+                  <div class="font-medium neon-text">V2rayN</div>
+                  <div class="text-sm text-neon-green">Windows 10+</div>
+                </div>
+                <div class="flex gap-2">
+                  <a href="https://github.com/2dust/v2rayN/releases/" target="_blank">
+                    <button class="p-2 neon-button rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Installation Tutorial -->
+    <div class="cyber-glass rounded-xl p-6 shadow-lg">
+      <h2 class="text-2xl font-semibold text-center mb-8 neon-text">آموزش نصب سایبری</h2>
+      <div class="grid gap-6">
+        <!-- iOS Tutorial -->
+        <div class="tutorial-item">
+          <div class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-800/30 rounded-lg transition-all" onclick="toggleTutorial('ios')">
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-neon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18.5a6.5 6.5 0 100-13 6.5 6.5 0 000 13z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14.5c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3z"/>
+              </svg>
+              <span class="text-lg font-medium neon-text">آموزش iOS</span>
+            </div>
+            <svg class="w-5 h-5 transform transition-transform duration-300 tutorial-icon" fill="none" stroke="var(--neon-blue)" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <div class="hidden tutorial-content p-4 rounded-lg bg-gray-900/30 mt-2">
+            <video controls class="rounded-lg w-full">
+              <source src="videos/ios_tutorial.mp4" type="video/mp4">
+              مرورگر شما از ویدئو پشتیبانی نمی‌کند.
+            </video>
+          </div>
+        </div>
+
+        <!-- Android Tutorial -->
+        <div class="tutorial-item">
+          <div class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-800/30 rounded-lg transition-all" onclick="toggleTutorial('android')">
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-neon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3h6m-6 18h6M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              </svg>
+              <span class="text-lg font-medium neon-text">آموزش Android</span>
+            </div>
+            <svg class="w-5 h-5 transform transition-transform duration-300 tutorial-icon" fill="none" stroke="var(--neon-blue)" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <div class="hidden tutorial-content p-4 rounded-lg bg-gray-900/30 mt-2">
+            <video controls class="rounded-lg w-full">
+              <source src="videos/android_tutorial.mp4" type="video/mp4">
+              مرورگر شما از ویدئو پشتیبانی نمی‌کند.
+            </video>
+          </div>
+        </div>
+
+        <!-- Windows Tutorial -->
+        <div class="tutorial-item">
+          <div class="flex items-center justify-between cursor-pointer p-4 hover:bg-gray-800/30 rounded-lg transition-all" onclick="toggleTutorial('windows')">
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-neon-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <span class="text-lg font-medium neon-text">آموزش Windows</span>
+            </div>
+            <svg class="w-5 h-5 transform transition-transform duration-300 tutorial-icon" fill="none" stroke="var(--neon-blue)" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+          <div class="hidden tutorial-content p-4 rounded-lg bg-gray-900/30 mt-2">
+            <video controls class="rounded-lg w-full">
+              <source src="videos/windows_tutorial.mp4" type="video/mp4">
+              مرورگر شما از ویدئو پشتیبانی نمی‌کند.
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support Section -->
+    <div class="cyber-glass rounded-xl p-6 shadow-lg">
+      <h2 class="text-2xl font-semibold text-center mb-6 neon-text">پشتیبانی سایبری</h2>
+      <div class="grid gap-6">
+        <div class="p-4 rounded-lg bg-gray-900/30">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="text-center md:text-right">
+              <h3 class="text-lg font-medium neon-text mb-2">پشتیبانی تلگرام</h3>
+              <p class="text-neon-green">ارتباط سریع در شبکه سایبری</p>
+            </div>
+            <a href="https://t.me/support" target="_blank" class="neon-button flex items-center gap-2 px-6 py-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20l-3-3H6a2 2 0 00-2-2V6a2 2 0 012-2h12a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              ارتباط سایبری
+            </a>
+          </div>
+        </div>
+        <div class="p-4 rounded-lg bg-gray-900/30">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="text-center md:text-right">
+              <h3 class="text-lg font-medium neon-text mb-2">سوالات متداول</h3>
+              <p class="text-neon-green">پاسخ‌های سایبری به سوالات شما</p>
+            </div>
+            <a href="#" class="neon-button flex items-center gap-2 px-6 py-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              مشاهده سوالات
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const themeButton = document.getElementById('theme-toggle');
+      if(document.body.classList.contains('light')) {
+        themeButton.innerHTML = `<svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.293 13.293A8 8 0 116.707 2.707 8 8 0 0017.293  13.293z"/>
+        </svg>`;
+      } else {
+        themeButton.innerHTML = `<svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="var(--neon-blue)">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364l-1.414-1.414M6.05 6.05L4.636 4.636m12.728 0L18.364 4.636M6.05 17.95l-1.414 1.414M12 8a4 4 0 100 8 4 4 0 000-8z" />
+        </svg>`;
+      }
+    }
+
+    function formatBytes(bytes, decimals = 2) {
+      if (bytes === 0) return '0 بایت';
+      const k = 1024;
+      const sizes = ['بایت', 'کیلوبایت', 'مگابایت', 'گیگابایت', 'ترابایت', 'پتابایت', 'اکسابایت', 'زتابایت', 'یگابایت'];
+      const i = Math.floor(Math.log(Math.abs(bytes)) / Math.log(k));
+      const result = (Math.abs(bytes) / Math.pow(k, i)).toFixed(decimals);
+      return parseFloat(result) * Math.sign(bytes) + ' ' + sizes[i];
+    }
+
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        console.log('کپی شد');
+      } catch (err) {
+        console.error('کپی نشد:', err);
+      }
+    }
+
+    function copyAllConnections() {
+      const texts = document.querySelectorAll('.connection-text');
+      const allText = Array.from(texts).map(el => el.innerText.trim()).join("\n");
+      copyToClipboard(allText);
+    }
+
+    function toggleDropdown() {
+      const content = document.getElementById('dropdownContent');
+      const icon = document.getElementById('dropdownIcon');
+      content.classList.toggle('hidden');
+      icon.classList.toggle('rotate-180');
+    }
+
+    function toggleTutorial(id) {
+      const item = document.querySelector(`[onclick="toggleTutorial('${id}')"]`).parentElement;
+      const content = item.querySelector('.tutorial-content');
+      const icon = item.querySelector('.tutorial-icon');
+      
+      content.classList.toggle('hidden');
+      icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+
+    const totalByte = parseInt('{{ .totalByte }}', 10);
+    const downloadByte = parseInt('{{ .downloadByte }}', 10);
+    const uploadByte = parseInt('{{ .uploadByte }}', 10);
+    const usedBytes = downloadByte + uploadByte;
+    const remainingBytes = totalByte - usedBytes;
+    
+    document.getElementById('usedText').textContent = 'استفاده شده: ' + formatBytes(usedBytes);
+    if (totalByte === 0) {
+      document.getElementById('remainingText').textContent = 'کل: ∞ | باقی مانده: ∞';
+      document.getElementById('usageBar').style.width = '100%';
+    } else {
+      document.getElementById('remainingText').textContent = 'باقی مانده: ' + formatBytes(remainingBytes);
+      const usagePercentage = Math.min(100, (usedBytes / totalByte) * 100);
+      document.getElementById('usageBar').style.width = usagePercentage + '%';
+    }
+
+    const expireValue = '{{ .expire }}';
+    const expireTimestamp = parseInt(expireValue, 10) * 1000;
+    const expireDateElement = document.getElementById('expireDate');
+
+    if (expireValue === '0') {
+      expireDateElement.textContent = 'برای همیشه';
+    } else {
+      const expireDate = new Date(expireTimestamp);
+      const gy = expireDate.getFullYear();
+      const gm = expireDate.getMonth() + 1;
+      const gd = expireDate.getDate();
+      const { jy, jm, jd } = jalaali.toJalaali(gy, gm, gd);
+      expireDateElement.textContent = `${jy}/${jm}/${jd}`;
+
+      const now = new Date();
+      let diff = expireTimestamp - now.getTime();
+
+      let remainingTime = "";
+      if (diff > 0) {
+        const daysRemaining = Math.floor(diff / (1000 * 60 * 60 * 24));
+        if (daysRemaining > 0) {
+          remainingTime = daysRemaining + " روز";
+        } else {
+          const hoursRemaining = Math.floor(diff / (1000 * 60 * 60));
+          remainingTime = hoursRemaining + " ساعت";
+        }
+      } else {
+        remainingTime = "منقضی شده";
+      }
+
+      expireDateElement.textContent += "";
+
+      const remainingTimeElement = document.getElementById('remainingTime');
+      if (remainingTimeElement) {
+        remainingTimeElement.textContent = remainingTime;
+      }
+    }
+
+    const statusElement = document.getElementById('status');
+    if (totalByte === 0) {
+      statusElement.textContent = 'نامحدود';
+    } else if (expireTimestamp >= Date.now() && usedBytes <= totalByte) {
+      statusElement.textContent = 'فعال';
+    } else {
+      statusElement.textContent = 'غیرفعال';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        const qr = new QRious({
+          element: document.getElementById('qrcode'),
+          value: '{{ .subUrl }}',
+          size: 200,
+          level: 'H',
+          background: '#000000',
+          foreground: '#00f0ff',
+          padding: 16
+        });
+      } catch (error) {
+        console.error('Error generating QR code:', error);
+        const qrcodeElement = document.getElementById('qrcode');
+        if (qrcodeElement) {
+          qrcodeElement.insertAdjacentHTML('afterend', '<p class="text-neon-pink mt-2">خطا در ایجاد کد QR</p>');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
